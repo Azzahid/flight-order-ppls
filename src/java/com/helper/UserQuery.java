@@ -13,8 +13,6 @@ import java.util.UUID;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 import com.entity.Booking;
-import com.entity.BookingInfo;
-import com.entity.FlightInfo;
 import com.entity.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,18 +82,23 @@ public class UserQuery extends DbConnector{
         return false;
     }
     
-    public List<BookingInfo> getMyBooking(int userId, String token) {
+    public List<Booking> getMyBooking(int userId, String token) {
         if (checkToken(userId, token)) {
-            List<BookingInfo> tickets = new Vector<>();
+            List<Booking> tickets = new Vector<>();
             String queryTickets = "SELECT * FROM bookings WHERE userid = "+userId+";";
 
             try {
                 rs = st.executeQuery(queryTickets);
                 while(rs.next()){
-                    BookingInfo booking = new BookingInfo();
-                    FlightInfo flight = new FlightInfo();
+                    Booking booking = new Booking();
+                    User user = new User();
+                    Flight flight = new Flight();
                     
-                    
+                    booking.setId(rs.getInt("bookingId"));
+                    booking.setPassengerName(rs.getString("passengername"));
+                    booking.setStatus(rs.getString("status"));
+                    booking.setUserId(user);
+                    booking.setFlightId(flight);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(UserQuery.class.getName()).log(Level.SEVERE, null, ex);

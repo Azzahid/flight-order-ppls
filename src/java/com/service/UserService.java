@@ -13,7 +13,6 @@ import com.helper.UserQuery;
 import java.util.List;
 import java.util.Vector;
 import com.entity.Booking;
-import com.entity.BookingInfo;
 import com.entity.User;
 
 /**
@@ -46,9 +45,9 @@ public class UserService {
         return query.login(username, password);
     }
     
-    public List<BookingInfo> getMyBooking(int userId, String token) {
+    public List<Booking> getMyBooking(int userId, String token) {
         UserQuery query = new UserQuery();
-        List<BookingInfo> tickets = query.getMyBooking(userId, token);
+        List<Booking> tickets = query.getMyBooking(userId, token);
         return tickets;
     }
 }
