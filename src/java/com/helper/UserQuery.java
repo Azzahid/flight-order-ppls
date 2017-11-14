@@ -14,6 +14,7 @@ import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 import com.entity.Booking;
 import com.entity.BookingInfo;
+import com.entity.FlightInfo;
 import com.entity.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,7 +93,8 @@ public class UserQuery extends DbConnector{
                 rs = st.executeQuery(queryTickets);
                 while(rs.next()){
                     BookingInfo booking = new BookingInfo();
-                    FlightInfo 
+                    FlightInfo flight = new FlightInfo();
+                    
                     
                 }
             } catch (SQLException ex) {

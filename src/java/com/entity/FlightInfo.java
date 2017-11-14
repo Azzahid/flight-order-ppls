@@ -11,4 +11,9 @@ package com.entity;
  */
 public class FlightInfo extends Flight{
     public Location locationInfo;
+    
+    public FlightInfo() {
+        super();
+        locationInfo = new Location();
+    }
 }
