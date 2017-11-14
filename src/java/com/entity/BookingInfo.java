@@ -11,4 +11,9 @@ package com.entity;
  */
 public class BookingInfo extends Booking{
     public FlightInfo flightInfo;
+    
+    public BookingInfo() {
+        super();
+        flightInfo = new FlightInfo();
+    }
 }
