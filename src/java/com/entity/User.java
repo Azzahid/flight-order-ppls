@@ -71,6 +71,8 @@ public class User implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date validDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<Passenger> passengerCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private Collection<Booking> bookingCollection;
 
     public User() {
@@ -133,6 +135,15 @@ public class User implements Serializable {
 
     public void setValidDate(Date validDate) {
         this.validDate = validDate;
+    }
+
+    @XmlTransient
+    public Collection<Passenger> getPassengerCollection() {
+        return passengerCollection;
+    }
+
+    public void setPassengerCollection(Collection<Passenger> passengerCollection) {
+        this.passengerCollection = passengerCollection;
     }
 
     @XmlTransient

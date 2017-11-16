@@ -6,8 +6,10 @@
 package com.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,12 +19,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -78,6 +82,8 @@ public class Flight implements Serializable {
     @JoinColumn(name = "DestinationId", referencedColumnName = "Id")
     @ManyToOne(optional = false)
     private Destination destinationId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "flightId")
+    private Collection<Booking> bookingCollection;
 
     public Flight() {
     }
@@ -157,6 +163,15 @@ public class Flight implements Serializable {
 
     public void setDestinationId(Destination destinationId) {
         this.destinationId = destinationId;
+    }
+
+    @XmlTransient
+    public Collection<Booking> getBookingCollection() {
+        return bookingCollection;
+    }
+
+    public void setBookingCollection(Collection<Booking> bookingCollection) {
+        this.bookingCollection = bookingCollection;
     }
 
     @Override

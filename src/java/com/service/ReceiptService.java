@@ -5,6 +5,7 @@
  */
 package com.service;
 
+import com.helper.Receipt;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -22,5 +23,11 @@ public class ReceiptService {
     @WebMethod(operationName = "hello")
     public String hello(@WebParam(name = "name") String txt) {
         return "Hello " + txt + " !";
+    }
+    
+    @WebMethod(operationName = "createrReceipt")
+    public String createReceipt(@WebParam(name = "bookingId") int bookingId) {
+        Receipt receipt = new Receipt(bookingId);
+        return receipt.generateReceipt();
     }
 }
