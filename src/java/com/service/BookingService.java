@@ -60,6 +60,8 @@ public class BookingService {
      */
     @WebMethod(operationName = "ModifyBooking")
     @Oneway
-    public void ModifyBooking(@WebParam(name = "id") int id, @WebParam(name = "status") String status, @WebParam(name = "userId") int userId, @WebParam(name = "flightId") Flight flightId) {
+    public void ModifyBooking(@WebParam(name = "id") int id, @WebParam(name = "status") String status, @WebParam(name = "totalPrice") double totalPrice, @WebParam(name = "paymentMethod") String paymentMethod, @WebParam(name = "bookingTime") Date bookingTime, @WebParam(name = "flightId") Flight flightId, @WebParam(name = "userId") int userId) {
+
+
     }
 }

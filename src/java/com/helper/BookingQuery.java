@@ -28,4 +28,16 @@ public class BookingQuery extends DbConnector {
     public void insertBooking(Booking booking) {
         insertBooking(booking.getId(), booking.getUserId().getId(), booking.getFlightId().getId(), booking.getStatus(), booking.getTotalPrice(), booking.getPaymentMethod(), booking.getBookingTime());
     }
+    
+    public void updateBooking(int id, int userid, int flightid, String status, double totalPrice, String paymentMethod, Date bookingTime) {
+        try {
+            st.executeUpdate("UPDATE bookings SET UserId = " + String.valueOf(userid) + ", FlightId = " + String.valueOf(flightid) + ", Status = " + status + ", TotalPrice = " + String.valueOf(totalPrice) + ", PaymentMethod = " + paymentMethod + ", BookingTime" + String.valueOf(bookingTime.getTime()) + " WHERE Id = " + String.valueOf(id) + "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void updateBooking(Booking booking) {
+        updateBooking(booking.getId(), booking.getUserId().getId(), booking.getFlightId().getId(), booking.getStatus(), booking.getTotalPrice(), booking.getPaymentMethod(), booking.getBookingTime());
+    }
 }
