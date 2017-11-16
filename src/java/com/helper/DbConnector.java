@@ -18,6 +18,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -27,11 +30,13 @@ public class DbConnector {
     protected Connection con;
     protected Statement st;
     protected ResultSet rs;
+    protected EntityManager em;
     
     public DbConnector(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            
+            EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "flightAppPU" );
+            em = emfactory.createEntityManager();
             con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/flightorder", "root", "");
             st = (Statement) con.createStatement();
         }catch(ClassNotFoundException | SQLException ex){

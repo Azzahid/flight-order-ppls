@@ -49,10 +49,10 @@ public class Airport implements Serializable {
     @Size(min = 1, max = 64)
     @Column(name = "Name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "departureId")
-    private Collection<Flight> flightCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinationId")
-    private Collection<Flight> flightCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "airportID")
+    private Collection<Destination> destinationCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "airportID")
+    private Collection<Departure> departureCollection;
     @JoinColumn(name = "LocationId", referencedColumnName = "Id")
     @ManyToOne(optional = false)
     private Location locationId;
@@ -86,21 +86,21 @@ public class Airport implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Flight> getFlightCollection() {
-        return flightCollection;
+    public Collection<Destination> getDestinationCollection() {
+        return destinationCollection;
     }
 
-    public void setFlightCollection(Collection<Flight> flightCollection) {
-        this.flightCollection = flightCollection;
+    public void setDestinationCollection(Collection<Destination> destinationCollection) {
+        this.destinationCollection = destinationCollection;
     }
 
     @XmlTransient
-    public Collection<Flight> getFlightCollection1() {
-        return flightCollection1;
+    public Collection<Departure> getDepartureCollection() {
+        return departureCollection;
     }
 
-    public void setFlightCollection1(Collection<Flight> flightCollection1) {
-        this.flightCollection1 = flightCollection1;
+    public void setDepartureCollection(Collection<Departure> departureCollection) {
+        this.departureCollection = departureCollection;
     }
 
     public Location getLocationId() {

@@ -13,9 +13,13 @@ import java.util.UUID;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 import com.entity.Booking;
+import com.entity.Flight;
 import com.entity.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -82,27 +86,27 @@ public class UserQuery extends DbConnector{
         return false;
     }
     
-    public List<Booking> getMyBooking(int userId, String token) {
-        if (checkToken(userId, token)) {
-            List<Booking> tickets = new Vector<>();
-            String queryTickets = "SELECT * FROM bookings WHERE userid = "+userId+";";
-
-            try {
-                rs = st.executeQuery(queryTickets);
-                while(rs.next()){
-                    Booking booking = new Booking();
-                    User user = new User();
-                    Flight flight = new Flight();
-                    
-                    booking.setId(rs.getInt("bookingId"));
-                    booking.setPassengerName(rs.getString("passengername"));
-                    booking.setStatus(rs.getString("status"));
-                    booking.setUserId(user);
-                    booking.setFlightId(flight);
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(UserQuery.class.getName()).log(Level.SEVERE, null, ex);
+    public User getUser(Integer userId, String token) {
+        TypedQuery<User> query = em.createNamedQuery("User.findById",User.class);
+        query.setParameter("id", userId);
+        User results = query.getSingleResult();
+        long validDate = results.getValidDate().getTime();
+        String tokenDB = results.getToken();
+        if (tokenDB.equals(token)) {
+            if (System.currentTimeMillis() >= validDate) {
+                return results;
             }
+        }
+        return null;
+    }
+    
+    public List<Booking> getBookingWithID(Integer userId, String token) {
+        if (checkToken(userId, token)) {
+            TypedQuery<Booking> query = em.createNamedQuery("Booking.findByUserId",Booking.class);
+            query.setParameter("Id", userId);
+            List<Booking> results = query.getResultList();
+            
+            return results;
         }
         
         return null;

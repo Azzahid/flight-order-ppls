@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b")
     , @NamedQuery(name = "Booking.findById", query = "SELECT b FROM Booking b WHERE b.id = :id")
     , @NamedQuery(name = "Booking.findByStatus", query = "SELECT b FROM Booking b WHERE b.status = :status")
-    , @NamedQuery(name = "Booking.findByPassengerName", query = "SELECT b FROM Booking b WHERE b.passengerName = :passengerName")})
+    , @NamedQuery(name = "Booking.findByPassengerName", query = "SELECT b FROM Booking b WHERE b.passengerName = :passengerName")
+    , @NamedQuery(name = "Booking.findByUserId", query = "SELECT b FROM Booking b WHERE b.userId.id = :Id")})
 public class Booking implements Serializable {
 
     private static final long serialVersionUID = 1L;
