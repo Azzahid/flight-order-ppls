@@ -52,4 +52,18 @@ public class UserService {
         List<Booking> tickets = query.getBookingWithID(userId, token);
         return tickets;
     }
+    
+        /**
+     * @param username
+     * @param password
+     * @return String
+     */
+    @WebMethod(operationName = "register")
+    public User register (
+            @WebParam(name = "username")String username, 
+            @WebParam(name = "password")String password,
+            @WebParam(name = "name" )String name) {
+        UserQuery query = new UserQuery();
+        return query.register(username, password, name);
+    }
 }

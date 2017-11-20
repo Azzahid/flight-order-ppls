@@ -37,13 +37,14 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Passenger.findById", query = "SELECT p FROM Passenger p WHERE p.id = :id")
     , @NamedQuery(name = "Passenger.findByPassengerName", query = "SELECT p FROM Passenger p WHERE p.passengerName = :passengerName")
     , @NamedQuery(name = "Passenger.findByIdUsed", query = "SELECT p FROM Passenger p WHERE p.idUsed = :idUsed")
-    , @NamedQuery(name = "Passenger.findByIdNumber", query = "SELECT p FROM Passenger p WHERE p.idNumber = :idNumber")})
+    , @NamedQuery(name = "Passenger.findByIdNumber", query = "SELECT p FROM Passenger p WHERE p.idNumber = :idNumber")
+    , @NamedQuery(name = "Passenger.findByUserId", query = "SELECT p FROM Passenger p WHERE p.userId.id = :id")})
 public class Passenger implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "Id")
     private Integer id;
     @Basic(optional = false)

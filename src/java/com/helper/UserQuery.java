@@ -67,6 +67,32 @@ public class UserQuery extends DbConnector{
         return user;
     }
     
+    public User register(String username, String password, String name)
+    {
+        User user = new User();
+        String token = UUID.randomUUID().toString();
+        Timestamp validDate = new Timestamp(System.currentTimeMillis()+UserQuery.TokenTime);
+        
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setName(name);
+        user.setToken(token);
+        user.setValidDate(validDate);
+        try {
+            utx.begin();
+            em.joinTransaction();
+            em.persist(user);
+            em.flush();
+            em.refresh(user);
+            utx.commit();
+            return user;
+        } catch (Exception Ex) {
+            System.out.println(Ex.toString());
+        }
+        
+        return null;
+    }
+    
     public boolean checkToken(Integer userId, String token) {
         String query = "SELECT * FROM Users WHERE userid = "+userId+";";
         try{

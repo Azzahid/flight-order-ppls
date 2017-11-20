@@ -5,6 +5,8 @@
  */
 package com.service;
 
+import com.entity.Departure;
+import com.entity.Destination;
 import com.entity.Flight;
 import com.helper.FlightQuery;
 import java.sql.Timestamp;
@@ -37,6 +39,12 @@ public class FlightService {
         return flights;
     }
     
+    /**
+     *
+     * @param destinationAirportID
+     * @param departureAirportID
+     * @return
+     */
     @WebMethod(operationName = "getFlightsFromAirport")
     public List<Flight> getFlightsFromAirport(
             @WebParam(name = "destinationAirportID") int destinationAirportID,
@@ -47,6 +55,13 @@ public class FlightService {
         return flights;
     }
     
+    /**
+     *
+     * @param destinationAirportID
+     * @param departureAirportID
+     * @param BoardingTime
+     * @return
+     */
     @WebMethod(operationName = "getFlightsFromAirportAndDate")
     public List<Flight> getFlightsFromAirportAndDate(
             @WebParam(name = "destinationAirportID") int destinationAirportID,
@@ -62,6 +77,11 @@ public class FlightService {
         return flights;
     }
     
+    /**
+     *
+     * @param BoardingTime
+     * @return
+     */
     @WebMethod(operationName = "getFlightsFromDate")
     public List<Flight> getFlightsFromDate(@WebParam(name = "BoardingTime") Date BoardingTime) {
         FlightQuery query = new FlightQuery();
@@ -71,14 +91,28 @@ public class FlightService {
         return flights;
     }
     
-    
+    /**
+     *
+     * @param flight
+     * @return
+     */
     @WebMethod(operationName = "createFlight")
     public boolean createFlight(@WebParam(name = "Flight") Flight flight) {
-        
-        
-        return false;
+        FlightQuery query = new FlightQuery();
+        return query.createFlight(flight);
     }
     
+    /**
+     *
+     * @param destinationAirportId
+     * @param departureAirportId
+     * @param Company
+     * @param Quota
+     * @param Price
+     * @param Quality
+     * @param BoardingTime
+     * @return
+     */
     @WebMethod(operationName = "createFlightFromData")
     public boolean createFlightFromData(
             @WebParam(name = "destinationAirportId") int destinationAirportId,
@@ -87,9 +121,49 @@ public class FlightService {
             @WebParam(name = "Quota") int Quota,
             @WebParam(name = "Price") double Price,
             @WebParam(name = "Quality") String Quality,
-            @WebParam(name = "BoardingTime") Timestamp BoardingTime) {
+            @WebParam(name = "BoardingTime") Date BoardingTime) {
+        Flight flight = new Flight();
+        flight.setBoardingTime(BoardingTime);
+        flight.setCompany(Company);
+        flight.setPrice(Price);
+        flight.setQuality(Quality);
+        flight.setQuota(Quota);
+        Destination dest = new Destination();
+        dest.setId(destinationAirportId);
+        Departure dep = new Departure();
+        dep.setId(departureAirportId);
+        flight.setDestinationId(dest);
+        flight.setDepartureId(dep);
         
+        return createFlight(flight);
+    }
+    
+    @WebMethod(operationName = "updateFlightData")
+    public boolean updateFlightData(
+            @WebParam(name = "flightId") int flightId,
+            @WebParam(name = "destinationAirportId") int destinationAirportId,
+            @WebParam(name = "departureAirportId") int departureAirportId,
+            @WebParam(name = "Company") String Company,
+            @WebParam(name = "Quota") int Quota,
+            @WebParam(name = "Price") double Price,
+            @WebParam(name = "Quality") String Quality,
+            @WebParam(name = "BoardingTime")Date BoardingTime) {
+        System.out.println("fish");
+        Flight flight = new Flight();
+        flight.setId(flightId);
+        flight.setBoardingTime(BoardingTime);
+        flight.setCompany(Company);
+        flight.setPrice(Price);
+        flight.setQuality(Quality);
+        flight.setQuota(Quota);
+        Destination dest = new Destination();
+        dest.setId(destinationAirportId);
+        Departure dep = new Departure();
+        dep.setId(departureAirportId);
+        flight.setDestinationId(dest);
+        flight.setDepartureId(dep);
+        FlightQuery query = new FlightQuery();
         
-        return false;
+        return query.updateFlight(flight);
     }
 }
