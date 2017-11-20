@@ -60,6 +60,31 @@ public class BookingQuery extends DbConnector {
         return booking;
     }
     
+    public boolean updateBookingJPA(Booking booking) {
+        Booking bookingDB = em.find(Booking.class, booking.getId());
+        try {
+            utx.begin();
+            em.joinTransaction();
+            if (booking.getStatus() != null && !booking.getStatus().isEmpty()) {
+                bookingDB.setStatus(booking.getStatus());
+            }
+            if (booking.getPaymentMethod()!= null && !booking.getPaymentMethod().isEmpty()) {
+                bookingDB.setPaymentMethod(booking.getPaymentMethod());
+            }
+            utx.commit();
+            return true;
+        } catch (Exception ex) {
+            try {
+                utx.rollback();
+            } catch (Exception ex1) {
+                Logger.getLogger(PassengerQuery.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            System.out.println(ex.toString());
+        }
+        
+        return true;
+    }
+    
     public void updateBooking(int id, int userid, int flightid, String status, double totalPrice, String paymentMethod, Date bookingTime) {
         try {
             st.executeUpdate("UPDATE bookings SET UserId = " + String.valueOf(userid) + ", FlightId = " + String.valueOf(flightid) + ", Status = " + status + ", TotalPrice = " + String.valueOf(totalPrice) + ", PaymentMethod = " + paymentMethod + ", BookingTime" + String.valueOf(bookingTime.getTime()) + " WHERE Id = " + String.valueOf(id) + "");

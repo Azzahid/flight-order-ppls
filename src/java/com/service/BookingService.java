@@ -102,14 +102,15 @@ public class BookingService {
      */
     @WebMethod(operationName = "ModifyBooking")
     @Oneway
-    public void ModifyBooking(@WebParam(name = "id") int id, @WebParam(name = "status") String status, @WebParam(name = "totalPrice") double totalPrice, @WebParam(name = "paymentMethod") String paymentMethod, @WebParam(name = "bookingTime") Date bookingTime, @WebParam(name = "flightId") Flight flightId, @WebParam(name = "userId") int userId) {
-        Booking booking = new Booking(id, status, totalPrice, paymentMethod, bookingTime);
-        booking.setFlightId(flightId);
-        
-        //booking.setUserId(userId); how to find user by id
+    public void ModifyBooking(
+            @WebParam(name = "id") int id, 
+            @WebParam(name = "status") String status, 
+            @WebParam(name = "paymentMethod") String paymentMethod 
+    ) {
+        Booking booking = new Booking(id, status, 0, paymentMethod, new Date());
         
         BookingQuery bookingQuery = new BookingQuery();
-        bookingQuery.updateBooking(booking);
+        bookingQuery.updateBookingJPA(booking);
     }
     
      /**
