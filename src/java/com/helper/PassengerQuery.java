@@ -48,11 +48,7 @@ public class PassengerQuery extends DbConnector{
         } catch (Exception ex) {
             try {
                 utx.rollback();
-            } catch (IllegalStateException ex1) {
-                Logger.getLogger(FlightQuery.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch (SecurityException ex1) {
-                Logger.getLogger(FlightQuery.class.getName()).log(Level.SEVERE, null, ex1);
-            } catch (SystemException ex1) {
+            } catch (IllegalStateException | SecurityException | SystemException ex1) {
                 Logger.getLogger(FlightQuery.class.getName()).log(Level.SEVERE, null, ex1);
             }
             System.out.println(ex.toString());
@@ -60,5 +56,32 @@ public class PassengerQuery extends DbConnector{
         
         return false;
     }
-
+    
+     public boolean updatePassenger(Passenger passenger) {
+        Passenger passengerDB = em.find(Passenger.class, passenger.getId());
+        try {
+            utx.begin();
+            em.joinTransaction();
+            if (passenger.getPassengerName() != null && !passenger.getPassengerName().isEmpty()) {
+                passengerDB.setPassengerName(passenger.getPassengerName());
+            }
+            if (passenger.getIdUsed() != null && !passenger.getIdUsed().isEmpty()) {
+                passengerDB.setIdUsed(passenger.getIdUsed());
+            }
+            if (passenger.getIdNumber() != null && !passenger.getIdNumber().isEmpty()) {
+                passengerDB.setIdNumber(passenger.getIdNumber());
+            }
+            utx.commit();
+            return true;
+        } catch (Exception ex) {
+            try {
+                utx.rollback();
+            } catch (Exception ex1) {
+                Logger.getLogger(PassengerQuery.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            System.out.println(ex.toString());
+        }
+        
+        return false;
+    }
 }

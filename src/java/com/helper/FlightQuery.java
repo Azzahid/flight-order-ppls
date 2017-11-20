@@ -180,4 +180,12 @@ public class FlightQuery extends DbConnector{
         
         return false;
     }
+    
+    public Flight getFlight(int id) {
+        TypedQuery<Flight> query = em.createNamedQuery("Flight.findById",Flight.class);
+        query.setParameter("id", id);
+        System.out.println(id);
+        Flight results = query.getSingleResult();
+        return results;
+    }
 }

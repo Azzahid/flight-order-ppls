@@ -34,7 +34,7 @@ public class Bookingpassenger implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "Id")
     private Integer id;
     @JoinColumn(name = "BookingId", referencedColumnName = "Id")
