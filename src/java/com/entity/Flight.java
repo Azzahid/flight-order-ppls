@@ -42,13 +42,15 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Flight.findByCompany", query = "SELECT f FROM Flight f WHERE f.company = :company")
     , @NamedQuery(name = "Flight.findByPrice", query = "SELECT f FROM Flight f WHERE f.price = :price")
     , @NamedQuery(name = "Flight.findByQuality", query = "SELECT f FROM Flight f WHERE f.quality = :quality")
-    , @NamedQuery(name = "Flight.findByBoardingTime", query = "SELECT f FROM Flight f WHERE f.boardingTime = :boardingTime")})
+    , @NamedQuery(name = "Flight.findByBoardingTime", query = "SELECT f FROM Flight f WHERE f.boardingTime = :boardingTime")
+    , @NamedQuery(name = "Flight.findByAirport", query = "SELECT f FROM Flight f WHERE f.destinationId.airportID.id = :destAirportId AND f.departureId.airportID.id = :depAirportId")
+    , @NamedQuery(name = "Flight.findByLocation", query = "SELECT f FROM Flight f WHERE f.destinationId.airportID.locationId.id = :destLocationId AND f.departureId.airportID.locationId.id = :depLocationId")})
 public class Flight implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "Id")
     private Integer id;
     @Basic(optional = false)
@@ -76,10 +78,10 @@ public class Flight implements Serializable {
     private Date boardingTime;
     @JoinColumn(name = "DepartureId", referencedColumnName = "Id")
     @ManyToOne(optional = false)
-    private Airport departureId;
+    private Departure departureId;
     @JoinColumn(name = "DestinationId", referencedColumnName = "Id")
     @ManyToOne(optional = false)
-    private Airport destinationId;
+    private Destination destinationId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "flightId")
     private Collection<Booking> bookingCollection;
 
@@ -147,19 +149,19 @@ public class Flight implements Serializable {
         this.boardingTime = boardingTime;
     }
 
-    public Airport getDepartureId() {
+    public Departure getDepartureId() {
         return departureId;
     }
 
-    public void setDepartureId(Airport departureId) {
+    public void setDepartureId(Departure departureId) {
         this.departureId = departureId;
     }
 
-    public Airport getDestinationId() {
+    public Destination getDestinationId() {
         return destinationId;
     }
 
-    public void setDestinationId(Airport destinationId) {
+    public void setDestinationId(Destination destinationId) {
         this.destinationId = destinationId;
     }
 

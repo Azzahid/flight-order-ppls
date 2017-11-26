@@ -6,7 +6,10 @@
 package com.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,10 +19,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,13 +39,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b")
     , @NamedQuery(name = "Booking.findById", query = "SELECT b FROM Booking b WHERE b.id = :id")
     , @NamedQuery(name = "Booking.findByStatus", query = "SELECT b FROM Booking b WHERE b.status = :status")
-    , @NamedQuery(name = "Booking.findByPassengerName", query = "SELECT b FROM Booking b WHERE b.passengerName = :passengerName")})
+    , @NamedQuery(name = "Booking.findByTotalPrice", query = "SELECT b FROM Booking b WHERE b.totalPrice = :totalPrice")
+    , @NamedQuery(name = "Booking.findByPaymentMethod", query = "SELECT b FROM Booking b WHERE b.paymentMethod = :paymentMethod")
+    , @NamedQuery(name = "Booking.findByBookingTime", query = "SELECT b FROM Booking b WHERE b.bookingTime = :bookingTime")
+    , @NamedQuery(name = "Booking.findByUserId", query = "SELECT b FROM Booking b WHERE b.userId.id = :Id")})
 public class Booking implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "Id")
     private Integer id;
     @Basic(optional = false)
@@ -48,9 +58,20 @@ public class Booking implements Serializable {
     private String status;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 64)
-    @Column(name = "PassengerName")
-    private String passengerName;
+    @Column(name = "TotalPrice")
+    private double totalPrice;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 18)
+    @Column(name = "PaymentMethod")
+    private String paymentMethod;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "BookingTime")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date bookingTime;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookingId")
+    private Collection<Bookingpassenger> bookingpassengerCollection;
     @JoinColumn(name = "FlightId", referencedColumnName = "Id")
     @ManyToOne(optional = false)
     private Flight flightId;
@@ -65,10 +86,12 @@ public class Booking implements Serializable {
         this.id = id;
     }
 
-    public Booking(Integer id, String status, String passengerName) {
+    public Booking(Integer id, String status, double totalPrice, String paymentMethod, Date bookingTime) {
         this.id = id;
         this.status = status;
-        this.passengerName = passengerName;
+        this.totalPrice = totalPrice;
+        this.paymentMethod = paymentMethod;
+        this.bookingTime = bookingTime;
     }
 
     public Integer getId() {
@@ -87,12 +110,37 @@ public class Booking implements Serializable {
         this.status = status;
     }
 
-    public String getPassengerName() {
-        return passengerName;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setPassengerName(String passengerName) {
-        this.passengerName = passengerName;
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public Date getBookingTime() {
+        return bookingTime;
+    }
+
+    public void setBookingTime(Date bookingTime) {
+        this.bookingTime = bookingTime;
+    }
+
+    @XmlTransient
+    public Collection<Bookingpassenger> getBookingpassengerCollection() {
+        return bookingpassengerCollection;
+    }
+
+    public void setBookingpassengerCollection(Collection<Bookingpassenger> bookingpassengerCollection) {
+        this.bookingpassengerCollection = bookingpassengerCollection;
     }
 
     public Flight getFlightId() {

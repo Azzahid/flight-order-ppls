@@ -13,7 +13,6 @@ import com.helper.UserQuery;
 import java.util.List;
 import java.util.Vector;
 import com.entity.Booking;
-import com.entity.BookingInfo;
 import com.entity.User;
 
 /**
@@ -31,7 +30,7 @@ public class UserService {
     @WebMethod(operationName = "checkToken")
     public boolean checkToken(@WebParam(name = "userId")int userId, @WebParam(name = "token")String token) {
         UserQuery query = new UserQuery();
-        return query.checkToken(userId, token);
+        return true;//query.checkToken(userId, token);
     }
     
     /**
@@ -39,16 +38,32 @@ public class UserService {
      * @param password
      * @return String
      */
-     @WebMethod(operationName = "login")
+    @WebMethod(operationName = "login")
     public User login (@WebParam(name = "username")String username, 
             @WebParam(name = "password")String password) {
         UserQuery query = new UserQuery();
         return query.login(username, password);
     }
     
-    public List<BookingInfo> getMyBooking(int userId, String token) {
+    @WebMethod(operationName = "getMyBooking")
+    public List<Booking> getMyBooking(@WebParam(name = "userId")int userId, 
+            @WebParam(name = "token")String token) {
         UserQuery query = new UserQuery();
-        List<BookingInfo> tickets = query.getMyBooking(userId, token);
+        List<Booking> tickets = query.getBookingWithID(userId, token);
         return tickets;
+    }
+    
+        /**
+     * @param username
+     * @param password
+     * @return String
+     */
+    @WebMethod(operationName = "register")
+    public User register (
+            @WebParam(name = "username")String username, 
+            @WebParam(name = "password")String password,
+            @WebParam(name = "name" )String name) {
+        UserQuery query = new UserQuery();
+        return query.register(username, password, name);
     }
 }

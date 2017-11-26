@@ -13,11 +13,13 @@ import java.util.UUID;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 import com.entity.Booking;
-import com.entity.BookingInfo;
-import com.entity.FlightInfo;
+import com.entity.Flight;
 import com.entity.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -65,6 +67,32 @@ public class UserQuery extends DbConnector{
         return user;
     }
     
+    public User register(String username, String password, String name)
+    {
+        User user = new User();
+        String token = UUID.randomUUID().toString();
+        Timestamp validDate = new Timestamp(System.currentTimeMillis()+UserQuery.TokenTime);
+        
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setName(name);
+        user.setToken(token);
+        user.setValidDate(validDate);
+        try {
+            utx.begin();
+            em.joinTransaction();
+            em.persist(user);
+            em.flush();
+            em.refresh(user);
+            utx.commit();
+            return user;
+        } catch (Exception Ex) {
+            System.out.println(Ex.toString());
+        }
+        
+        return null;
+    }
+    
     public boolean checkToken(Integer userId, String token) {
         String query = "SELECT * FROM Users WHERE userid = "+userId+";";
         try{
@@ -73,9 +101,8 @@ public class UserQuery extends DbConnector{
                 String tokenDB = rs.getString("token");
                 long validDate = rs.getTimestamp("validDate").getTime();
                 if (tokenDB.equals(token)) {
-                    if (System.currentTimeMillis() >= validDate) {
+                    if (System.currentTimeMillis() >= validDate)
                         return true;
-                    }
                 }
             }  
         } catch (SQLException ex) {
@@ -84,22 +111,27 @@ public class UserQuery extends DbConnector{
         return false;
     }
     
-    public List<BookingInfo> getMyBooking(int userId, String token) {
-        if (checkToken(userId, token)) {
-            List<BookingInfo> tickets = new Vector<>();
-            String queryTickets = "SELECT * FROM bookings WHERE userid = "+userId+";";
-
-            try {
-                rs = st.executeQuery(queryTickets);
-                while(rs.next()){
-                    BookingInfo booking = new BookingInfo();
-                    FlightInfo flight = new FlightInfo();
-                    
-                    
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(UserQuery.class.getName()).log(Level.SEVERE, null, ex);
+    public User getUser(Integer userId, String token) {
+        TypedQuery<User> query = em.createNamedQuery("User.findById",User.class);
+        query.setParameter("id", userId);
+        User results = query.getSingleResult();
+        long validDate = results.getValidDate().getTime();
+        String tokenDB = results.getToken();
+        if (tokenDB.equals(token)) {
+            if (System.currentTimeMillis() >= validDate) {
+                return results;
             }
+        }
+        return null;
+    }
+    
+    public List<Booking> getBookingWithID(Integer userId, String token) {
+        if (checkToken(userId, token)) {
+            TypedQuery<Booking> query = em.createNamedQuery("Booking.findByUserId",Booking.class);
+            query.setParameter("Id", userId);
+            List<Booking> results = query.getResultList();
+            
+            return results;
         }
         
         return null;

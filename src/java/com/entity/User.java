@@ -46,7 +46,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "Id")
     private Integer id;
     @Basic(optional = false)
@@ -70,6 +70,8 @@ public class User implements Serializable {
     @Column(name = "validDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date validDate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<Passenger> passengerCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private Collection<Booking> bookingCollection;
 
@@ -133,6 +135,15 @@ public class User implements Serializable {
 
     public void setValidDate(Date validDate) {
         this.validDate = validDate;
+    }
+
+    @XmlTransient
+    public Collection<Passenger> getPassengerCollection() {
+        return passengerCollection;
+    }
+
+    public void setPassengerCollection(Collection<Passenger> passengerCollection) {
+        this.passengerCollection = passengerCollection;
     }
 
     @XmlTransient
