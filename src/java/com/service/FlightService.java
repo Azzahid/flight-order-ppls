@@ -166,4 +166,40 @@ public class FlightService {
         
         return query.updateFlight(flight);
     }
+    
+    @WebMethod(operationName = "getFlightData")
+    public Flight getFlightData(@WebParam(name = "flightId") int flightId) {
+        FlightQuery query = new FlightQuery();
+        
+        return query.getFlight(flightId);
+    }
+    
+    @WebMethod(operationName = "addQuota")
+    public boolean addQuota(
+            @WebParam(name = "flightId") int flightId, 
+            @WebParam(name = "totalPasenger") int totalPassenger
+    ) {
+        FlightQuery query = new FlightQuery();
+        
+        return query.addQuota(flightId, totalPassenger);
+    }
+    
+    /**
+     *
+     * @param flightId
+     * @param totalPassenger
+     * @return
+     */
+    @WebMethod(operationName = "decreaseQuota")
+    public boolean decreaseQuota(
+            @WebParam(name = "flightId") int flightId, 
+            @WebParam(name = "totalPasenger") int totalPassenger
+    ) {
+        FlightQuery query = new FlightQuery();
+        
+        return query.decreaseQuota(flightId, totalPassenger);
+    }
+    
+    
+    
 }

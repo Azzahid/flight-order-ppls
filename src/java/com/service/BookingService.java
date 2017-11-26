@@ -6,7 +6,9 @@
 package com.service;
 
 import com.entity.Booking;
+import com.entity.Bookingpassenger;
 import com.entity.Flight;
+import com.entity.Passenger;
 import com.entity.User;
 import com.helper.BookingPassengerQuery;
 import javax.jws.Oneway;
@@ -18,6 +20,7 @@ import com.helper.BookingQuery;
 import com.helper.FlightQuery;
 import java.util.List;
 import java.util.Vector;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -65,12 +68,10 @@ public class BookingService {
                 a = passengerId.charAt(i);
                 while(a != ',' && a != ']') {
                     id += a;
-                    System.out.println(a+"\n");
                     i++;
                     a = passengerId.charAt(i);
                 }
                 if (!id.isEmpty())
-                    System.out.println("halo");
                     pId.add(Integer.parseInt(id));
             }
         }
@@ -121,6 +122,29 @@ public class BookingService {
     @WebMethod(operationName = "getBookingById")
     public Booking getBookingById(@WebParam(name = "id") int id) {
         BookingQuery query = new BookingQuery();
-        return query.getBooking(id);
+        Booking a =  query.getBooking(id);
+        
+        return a;
+    }
+    
+    /**
+     * 
+     * @param id
+     * @return 
+     */
+    @WebMethod(operationName = "getBookingPassenger")   
+    public List<Passenger> getBookingPassenger(@WebParam(name = "id")int id) {
+        BookingQuery query = new BookingQuery();
+        return query.getBookingPassenger(id);
+    }
+    
+    /**
+     * 
+     * @param id
+     * @return 
+     */
+    @WebMethod(operationName = "getBookingPassengerCount")
+    public int getBookingPassengerCount(@WebParam(name = "id")int id) {
+        return getBookingPassenger(id).size();
     }
 }

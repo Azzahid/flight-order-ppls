@@ -101,9 +101,8 @@ public class UserQuery extends DbConnector{
                 String tokenDB = rs.getString("token");
                 long validDate = rs.getTimestamp("validDate").getTime();
                 if (tokenDB.equals(token)) {
-                    if (System.currentTimeMillis() >= validDate) {
+                    if (System.currentTimeMillis() >= validDate)
                         return true;
-                    }
                 }
             }  
         } catch (SQLException ex) {

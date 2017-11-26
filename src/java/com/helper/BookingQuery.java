@@ -9,6 +9,8 @@ import java.util.Date;
 import com.entity.Booking;
 import com.entity.Bookingpassenger;
 import com.entity.Passenger;
+import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.TypedQuery;
@@ -33,6 +35,21 @@ public class BookingQuery extends DbConnector {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<Passenger> getBookingPassenger(int id) {
+        TypedQuery<Bookingpassenger> query = em.createNamedQuery("Bookingpassenger.findByBookingId",Bookingpassenger.class);
+        query.setParameter("id", id);
+        List<Bookingpassenger> bp = query.getResultList();
+        List<Passenger> results = new Vector<>();
+        for (Bookingpassenger A : bp) {
+            results.add(A.getPassengerId());
+        }
+        return results;
+    }
+    
+    public int getBookingPassengerCount(int id) {
+        return getBookingPassenger(id).size();
     }
     
     public void insertBooking(Booking booking) {
@@ -100,8 +117,8 @@ public class BookingQuery extends DbConnector {
     public Booking getBooking(int id) {
         TypedQuery<Booking> query = em.createNamedQuery("Booking.findById",Booking.class);
         query.setParameter("id", id);
-        Booking results = query.getSingleResult();
-        return results;
+        Booking result = query.getSingleResult();
+        return result;
     }
     
     public double countTotalBookingPrice(Booking booking) {
