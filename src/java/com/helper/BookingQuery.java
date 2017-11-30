@@ -139,7 +139,7 @@ public class BookingQuery extends DbConnector {
         try {
             utx.begin();
             em.joinTransaction();
-            em.remove(booking);
+            booking.setStatus("Canceled");
             utx.commit();
             return true;
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
