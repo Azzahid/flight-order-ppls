@@ -3,11 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/azzah/OneDrive/Documents/NetBeansProjects/flightApp/src/java/com/entity/Flight.java</file>
-            <file>file:/C:/Users/azzah/OneDrive/Documents/NetBeansProjects/flightApp/web/index.html</file>
-            <file>file:/C:/Users/azzah/OneDrive/Documents/NetBeansProjects/flightApp/src/java/com/service/UserService.java</file>
-            <file>file:/C:/Users/azzah/OneDrive/Documents/NetBeansProjects/flightApp/src/java/com/helper/UserQuery.java</file>
-            <file>file:/C:/Users/azzah/OneDrive/Documents/NetBeansProjects/flightApp/src/java/com/helper/DbConnector.java</file>
+            <file>file:/C:/Users/azzah/OneDrive/Documents/NetBeansProjects/flightApp/src/java/com/helper/BookingQuery.java</file>
         </group>
     </open-files>
 </project-private>

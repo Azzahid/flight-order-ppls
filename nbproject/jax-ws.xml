@@ -4,6 +4,18 @@
     <service name="UserService">
       <implementation-class>com.service.UserService</implementation-class>
     </service>
+    <service name="FlightService">
+      <implementation-class>com.service.FlightService</implementation-class>
+    </service>
+    <service name="ReceiptService">
+      <implementation-class>com.service.ReceiptService</implementation-class>
+    </service>
+    <service name="PassengerService">
+      <implementation-class>com.service.PassengerService</implementation-class>
+    </service>
+    <service name="BookingService">
+      <implementation-class>com.service.BookingService</implementation-class>
+    </service>
   </services>
   <clients/>
 </jax-ws>

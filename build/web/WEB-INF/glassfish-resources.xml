@@ -11,4 +11,5 @@
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="java:app/FlightDB" object-type="user" pool-name="mysql_flightorder_rootPool"/>
+    <jdbc-resource enabled="true" jndi-name="java:app/flightorder" object-type="user" pool-name="mysql_flightorder_rootPool"/>
 </resources>
